@@ -1,10 +1,8 @@
-# untitled
-
-A Clojure library designed to ... well, that part is up to you.
+# Clojure CRUD Project
 
 ## Usage
 
-FIXME
+****
 
 ## License
 
