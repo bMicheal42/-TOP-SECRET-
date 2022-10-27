@@ -18,9 +18,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: us-central1
+  GAR_LOCATION: us-west1
   GKE_CLUSTER: health-samurai
-  GKE_ZONE: us-central1-c   
+  GKE_ZONE: us-west1-a  
   DEPLOYMENT_NAME: health-samurai
   REPOSITORY: health-samurai
   IMAGE: static-site
@@ -57,7 +57,7 @@ jobs:
       uses: 'google-github-actions/get-gke-credentials@v0'
       with:
         cluster_name: 'health-samurai'
-        location: 'us-central1-с'
+        location: 'us-west1-a'
 
 
 #     - id: 'get-credentials'
