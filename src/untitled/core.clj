@@ -123,7 +123,7 @@
 (defn handler [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body "<h1>11MOTHERFUCKER11</h1>"})
+   :body "<h1>GLEB IS SUPER MOTHERFUCKER</h1>"})
 
 (defn -main [& args]
   (ring/run-jetty handler {:port 3000 :join? false}))
