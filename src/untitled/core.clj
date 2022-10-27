@@ -126,7 +126,7 @@
    :body "<h1>GLEB IS SUPER MOTHERFUCKER</h1>"})
 
 (defn -main [& args]
-  (ring/run-jetty handler {:port 3000 :join? false}))
+  (ring/run-jetty handler {:port 80 :join? false}))
 
 ;(comment
 ;  (list-patients)
