@@ -5,10 +5,10 @@ on: [workflow_dispatch]
 env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: health-samurai-cluster
-  GKE_APP_NAME: health-samurai-shop
+  GKE_APP_NAME: health-samurai-crud
   GKE_SERVICE: health-samurai-service
   GKE_SERVICE_ACCOUNT: health-samurai-serviceaccount
-  GKE_DEPLOYMENT_NAME: health-samurai-shop-deployment
+  GKE_DEPLOYMENT_NAME: health-samurai-crud-deployment
   GKE_REGION: europe-west3
   GKE_ZONE: europe-west3-a
   
