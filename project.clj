@@ -5,5 +5,8 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/java.jdbc "0.7.12"]
-                 [org.xerial/sqlite-jdbc "3.20.0"]]
-  :repl-options {:init-ns untitled.core})
+                 [org.xerial/sqlite-jdbc "3.20.0"]
+                 [ring/ring-core "1.9.6"]
+                 [ring/ring-jetty-adapter "1.9.6"]]
+  :repl-options {:init-ns untitled.core}
+  :main untitled.core)
