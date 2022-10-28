@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: health-samurai-crud
-          image: gcr.io/river-bruin-366614/health-samurai
+          image: gcr.io/river-bruin-366614/health-samurai:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
