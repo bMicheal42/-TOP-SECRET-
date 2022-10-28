@@ -68,11 +68,18 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
+#   Deploy the new Docker image to the GKE cluster
+    - name: Deploy
+      working-directory: .
+      run: |-
+        envsubst < Service.yml | kubectl apply -f -
+        envsubst < Deployment.yml | kubectl apply -f -
+
         # replacing the image name in the k8s template
-        ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=gcr.io/$GKE_PROJECT/health-samurai:latest
-        ./kustomize build . | kubectl apply -f -
-        kubectl rollout status deployment/$DEPLOYMENT_NAME
-        kubectl get services -o wide
+#         ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=gcr.io/$GKE_PROJECT/health-samurai:latest
+#         ./kustomize build . | kubectl apply -f -
+#         kubectl rollout status deployment/$DEPLOYMENT_NAME
+#         kubectl get services -o wide
     # Deploy the new Docker image to the GKE cluster
 #     - name: Deploy
 #       working-directory: .
