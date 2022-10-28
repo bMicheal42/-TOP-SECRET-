@@ -32,14 +32,11 @@ jobs:
     # Build the Docker image
     - name: Build and Push
       working-directory: .
-      run: |-  
-        docker build \
-          --tag "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA" \
-          --build-arg GITHUB_SHA="$GITHUB_SHA" \
-          --build-arg GITHUB_REF="$GITHUB_REF" \
-          .
-        gcloud auth configure-docker $GKE_REGION-docker.pkg.dev --quiet
-        docker push "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA"     
+      run: |-
+        docker image build -t clj-on-k8s/health-samurai .
+        docker tag clj-on-k8s/health-samurai gcr.io/$GKE_PROJECT/health-samurai
+        gcloud auth configure-docker gcr.io --quiet
+        docker push gcr.io/$GKE_PROJECT/health-samurai
   Deploy:
     runs-on: ubuntu-latest
     environment: prod
