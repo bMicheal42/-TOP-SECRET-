@@ -64,7 +64,7 @@ jobs:
     - name: Deploy
       working-directory: .
       run: |-
-        kubectl run health-samurai --image gcr.io/${{ GKE_PROJECT }}/health-samurai --port 80
-        kubectl expose pods ${{ GKE_SERVICE }} --type "LoadBalancer"
+        kubectl run health-samurai --image gcr.io/$GKE_PROJECT/health-samurai --port 80
+        kubectl expose pods $GKE_SERVICE --type "LoadBalancer"
 #         envsubst < Service.yml | kubectl apply -f -
 #         envsubst < Deployment.yml | kubectl apply -f -
