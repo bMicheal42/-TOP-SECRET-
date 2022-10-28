@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $GKE_APP_NAME
+  name: health-samurai-crud
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: $GKE_APP_NAME
+      app: health-samurai-crud
   template:
     metadata:
       labels:
-        app: $GKE_APP_NAME
+        app: health-samurai-crud
     spec:
       containers:
-        - name: $GKE_APP_NAME
-          image: gcr.io/$GKE_PROJECT/health-samurai
+        - name: health-samurai-crud
+          image: gcr.io/river-bruin-366614/health-samurai
           ports:
             - containerPort: 80
           env:
