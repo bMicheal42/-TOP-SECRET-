@@ -10,7 +10,7 @@ export GKE_APP_NAME=health-samurai-crud
 export GKE_SERVICE=health-samurai-service
 export GKE_SERVICE_ACCOUNT=health-samurai-serviceaccount
 export GKE_DEPLOYMENT_NAME=health-samurai-crud-deployment
-
+export GITHUB_SHA=FirstDeploy
 # Get a list of regions:
 # $ gcloud compute regions list
 #
