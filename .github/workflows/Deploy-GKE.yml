@@ -60,9 +60,22 @@ jobs:
         location: ${{ env.GKE_ZONE }}
         credentials: ${{ secrets.GKE_SA_KEY }}
 
-    # Deploy the new Docker image to the GKE cluster
-    - name: Deploy
-      working-directory: .
+    # Set up kustomize
+    - name: Set up Kustomize
       run: |-
-        envsubst < Service.yml | kubectl apply -f -
-        envsubst < Deployment.yml | kubectl apply -f -
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |-
+        # replacing the image name in the k8s template
+        ./kustomize edit set image gcr.io/$GKE_PROJECT/health-samurai=gcr.io/$GKE_PROJECT/health-samurai:latest
+        ./kustomize build . | kubectl apply -f -
+        kubectl rollout status deployment/$DEPLOYMENT_NAME
+        kubectl get services -o wide
+    # Deploy the new Docker image to the GKE cluster
+#     - name: Deploy
+#       working-directory: .
+#       run: |-
+#         envsubst < Service.yml | kubectl apply -f -
+#         envsubst < Deployment.yml | kubectl apply -f -
