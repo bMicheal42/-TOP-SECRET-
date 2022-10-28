@@ -127,7 +127,6 @@
 
 (defn -main [& args]
   (ring/run-jetty handler {:port 80 :join? false}))
-❤️
 ;(comment
 ;  (list-patients)
 ;
