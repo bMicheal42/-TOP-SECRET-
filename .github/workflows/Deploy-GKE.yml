@@ -36,6 +36,7 @@ jobs:
         docker image build -t clj-on-k8s/health-samurai .
         docker tag clj-on-k8s/health-samurai gcr.io/$GKE_PROJECT/health-samurai
         gcloud auth configure-docker gcr.io --quiet
+        gcloud auth application-default login
         docker push gcr.io/$GKE_PROJECT/health-samurai
   Deploy:
     runs-on: ubuntu-latest
