@@ -33,11 +33,11 @@ jobs:
     - name: Build and Push
       working-directory: .
       run: |-
-        docker image build -t clj-on-k8s/health-samurai 
+        docker image build \
+          --tag "gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA"
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
         .
-        docker tag clj-on-k8s/health-samurai gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA
         gcloud auth configure-docker gcr.io --quiet
         docker push gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA
   Deploy:
