@@ -35,8 +35,6 @@ jobs:
       run: |-
         docker image build -t clj-on-k8s/health-samurai .
         docker tag clj-on-k8s/health-samurai gcr.io/$GKE_PROJECT/health-samurai
-        gcloud --quiet auth configure-docker
-        gcloud --quiet auth configure-docker --project river-bruin-366614
         docker push gcr.io/$GKE_PROJECT/health-samurai
   Deploy:
     runs-on: ubuntu-latest
