@@ -29,7 +29,7 @@ jobs:
 
     # Build the Docker image
     - name: Build and Push
-      working-directory: ch9_release/src/Tailwind.Traders.Web
+      working-directory: .
       run: |-  
         docker build \
           --tag "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA" \
@@ -63,7 +63,7 @@ jobs:
 
     # Deploy the new Docker image to the GKE cluster
     - name: Deploy
-      working-directory: ch9_release/src/Tailwind.Traders.Web
+      working-directory: .
       run: |-
         envsubst < Service.yml | kubectl apply -f -
         envsubst < Deployment.yml | kubectl apply -f -
