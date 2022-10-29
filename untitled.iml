@@ -18,11 +18,25 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Leiningen: clojure-complete:0.2.5" level="project" />
+    <orderEntry type="library" name="Leiningen: commons-codec:1.15" level="project" />
+    <orderEntry type="library" name="Leiningen: commons-fileupload:1.4" level="project" />
+    <orderEntry type="library" name="Leiningen: commons-io:2.11.0" level="project" />
+    <orderEntry type="library" name="Leiningen: crypto-equality:1.0.1" level="project" />
+    <orderEntry type="library" name="Leiningen: crypto-random:1.2.1" level="project" />
+    <orderEntry type="library" name="Leiningen: javax.servlet/javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Leiningen: nrepl:0.6.0" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.10.1" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.2.44" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/java.jdbc:0.7.12" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/spec.alpha:0.2.176" level="project" />
+    <orderEntry type="library" name="Leiningen: org.eclipse.jetty/jetty-http:9.4.48.v20220622" level="project" />
+    <orderEntry type="library" name="Leiningen: org.eclipse.jetty/jetty-io:9.4.48.v20220622" level="project" />
+    <orderEntry type="library" name="Leiningen: org.eclipse.jetty/jetty-server:9.4.48.v20220622" level="project" />
+    <orderEntry type="library" name="Leiningen: org.eclipse.jetty/jetty-util:9.4.48.v20220622" level="project" />
     <orderEntry type="library" name="Leiningen: org.xerial/sqlite-jdbc:3.20.0" level="project" />
+    <orderEntry type="library" name="Leiningen: ring/ring-codec:1.2.0" level="project" />
+    <orderEntry type="library" name="Leiningen: ring/ring-core:1.9.6" level="project" />
+    <orderEntry type="library" name="Leiningen: ring/ring-jetty-adapter:1.9.6" level="project" />
+    <orderEntry type="library" name="Leiningen: ring/ring-servlet:1.9.6" level="project" />
   </component>
 </module>

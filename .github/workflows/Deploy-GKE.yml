@@ -63,5 +63,5 @@ jobs:
     - name: Deploy
       working-directory: .
       run: |-
-        envsubst < Service.yml | kubectl apply -f -
-        envsubst < Deployment.yml | kubectl apply -f -
+        envsubst < webapp-service.yml | kubectl apply -f -
+        envsubst < webapp-deployment.yml | kubectl apply -f -

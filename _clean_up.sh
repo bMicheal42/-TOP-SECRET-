@@ -3,11 +3,11 @@
 GKE_PROJECT=river-bruin-366614
 GKE_CLUSTER=health-samurai-cluster
 GKE_SERVICE_ACCOUNT=health-samurai-serviceaccount
-GKE_ZONE=europe-west3-a
+GKE_ZONE=europe-west3
 
 gcloud config set project $GKE_PROJECT
 # Delete the cluster
-gcloud container clusters delete $GKE_CLUSTER --region $GKE_ZONE -q
+gcloud container clusters delete $GKE_CLUSTER --region $GKE_REGION -q
 
 # Delete service account
 gcloud iam -q service-accounts delete "$GKE_SERVICE_ACCOUNT@$GKE_PROJECT.iam.gserviceaccount.com"

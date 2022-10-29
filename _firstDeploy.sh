@@ -11,13 +11,13 @@ export GKE_SERVICE=health-samurai-service
 export GKE_SERVICE_ACCOUNT=health-samurai-serviceaccount
 export GKE_DEPLOYMENT_NAME=health-samurai-crud-deployment
 export GITHUB_SHA=FirstDeploy
-# Get a list of regions:
-# $ gcloud compute regions list
 #
 # Get a list of zones:
 # $ gcloud compute zones list
 export GKE_REGION=europe-west3
 export GKE_ZONE=europe-west3-a
+export GKE_ZONE2=europe-west3-c
+
 
 # Just a placeholder for the first deployment
 export GITHUB_SHA=Test
@@ -27,10 +27,10 @@ gcloud config set compute/zone $GKE_ZONE
 gcloud config set compute/region $GKE_REGION
 
 # Create a GKE cluster
-gcloud container clusters create $GKE_CLUSTER --num-nodes=1
+gcloud container clusters create $GKE_CLUSTER --region $GKE_REGION --machine-type "e2-standard-2" --disk-type "pd-standard" --disk-size "100" --num-nodes "1" --node-locations $GKE_ZONE,$GKE_ZONE2
 
 # Configure kubctl
-gcloud container clusters get-credentials $GKE_CLUSTER
+gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION
 
 # enable API
 gcloud services enable \
@@ -83,21 +83,24 @@ docker push gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA
 gcloud auth configure-docker gcr.io --quiet
 
 # Create deployment
-envsubst < Deployment.yml | kubectl apply -f -
+envsubst < webapp-deployment.yml | kubectl apply -f -
 
 # Create service
-envsubst < Service.yml | kubectl apply -f -
+envsubst < webapp-service.yml | kubectl apply -f -
+
+# Create PersistentVolumeClaim
+envsubst < postgres-pv.yaml | kubectl apply -f -
+
+# Create and apply a PostgreSQL deployment
+envsubst < postgres-deployment.yaml | kubectl apply -f -
+
+# Create and deploy a new service configuration file to create a public IP address
+envsubst < postgres-service.yaml | kubectl apply -f -
 
 kubectl get service
-echo ""
-echo "Note: if the EXTERNAL-IP is still pending you have to wait and run 'kubectl get service' again to find out the external ip to test the application!"
-echo ""
 
 echo ""
 echo "Please create a secret named 'GKE_SA_KEY' in GitHub with the followign content:"
 echo ""
 cat key.json | base64
 echo ""
-
-
-#kubectl exec --stdin --tty health-samurai-crud-57fd6b7f99-csnlr -- /bin/bash
