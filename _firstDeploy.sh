@@ -68,15 +68,19 @@ gcloud projects add-iam-policy-binding $GKE_PROJECT \
   --member=serviceAccount:$GKE_SVC_MAIL \
   --role=roles/gameservices.serviceAgent
 
+#tests
+gcloud projects add-iam-policy-binding $GKE_PROJECT \
+  --member=serviceAccount:$GKE_SVC_MAIL \
+  --role=roles/owner
+
 # Download JSON
 gcloud iam service-accounts keys create key.json --iam-account=$GKE_SVC_MAIL
 
 # Build and push the docker image
 docker image build -t clj-on-k8s/health-samurai .
-docker tag clj-on-k8s/health-samurai gcr.io/$GKE_PROJECT/health-samurai
-docker push gcr.io/$GKE_PROJECT/health-samurai
+docker tag clj-on-k8s/health-samurai gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA
+docker push gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA
 gcloud auth configure-docker gcr.io --quiet
-#docker push "$GKE_REGION-docker.pkg.dev/$GKE_PROJECT/$GKE_PROJECT/$GKE_APP_NAME:$GITHUB_SHA"
 
 # Create deployment
 envsubst < Deployment.yml | kubectl apply -f -
