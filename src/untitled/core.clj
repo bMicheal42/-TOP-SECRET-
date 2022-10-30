@@ -126,7 +126,7 @@
 (defn handler [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body "<h1> SUPER FINAL DEPLOYMENT TEST </h1>"})
+   :body "<h1> TEST TEST TEST </h1>"})
 
 (defn -main [& args]
   (ring/run-jetty handler {:port 80 :join? false}))
