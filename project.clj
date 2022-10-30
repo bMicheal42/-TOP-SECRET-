@@ -7,6 +7,7 @@
                  [org.clojure/java.jdbc "0.7.12"]
                  [org.xerial/sqlite-jdbc "3.20.0"]
                  [ring/ring-core "1.9.6"]
-                 [ring/ring-jetty-adapter "1.9.6"]]
+                 [ring/ring-jetty-adapter "1.9.6"]
+                 [org.postgresql/postgresql "9.4-1201-jdbc41"]]
   :repl-options {:init-ns untitled.core}
   :main untitled.core)

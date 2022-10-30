@@ -7,9 +7,12 @@
 
 
 ;; Global db
-(def db
-  {:dbtype "sqlite"
-   :dbname "db.sqlite3"})
+(def db {:dbtype "postgresql"
+         :dbname "gke_test_regional"
+         :host "35.246.185.186"
+         :port "5432"
+         :user "postgres"
+         :password "password"})
 
 ;; global keywords
 (def keywords [:address :sex :birthdate :full_name :medical_policy])
@@ -116,8 +119,8 @@
 ;; TODO 3. TESTS
 ;; TODO 4. API (Authorization)
 ;; TODO 5. FRONT
-;; TODO 6. CI/CD
-;; TODO 7. K8s
+;; DONE 6. CI/CD
+;; DONE 7. K8s
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn handler [request]

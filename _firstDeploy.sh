@@ -20,7 +20,7 @@ export GKE_ZONE2=europe-west3-c
 
 
 # Just a placeholder for the first deployment
-export GITHUB_SHA=Test
+export GITHUB_SHA=First-deploy
 
 gcloud config set project $GKE_PROJECT
 gcloud config set compute/zone $GKE_ZONE
