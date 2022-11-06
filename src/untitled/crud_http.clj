@@ -4,19 +4,14 @@
             [compojure.core :refer :all]
             [ring.util.http-response :refer :all]
             [untitled.db :refer [db]]
-            [untitled.crud_util :as util])
-  (:import
-           (java.time LocalDate)
-           (java.sql Date)
-           (java.time.format DateTimeParseException)))
-
+            [untitled.crud_util :as util]))
 
 ;; READ
 (defn list-patients []
   (ok (util/list-patients)))
 
 
-;; SEARCH & FIL
+;; SEARCH / FILTER
 (defn validate-search-patients [query]
   (let [valid-errors (util/false-validations query (select-keys util/search-schema (map first query)))]
     (if (empty? valid-errors)
@@ -27,7 +22,7 @@
 
 ;; GET patient by id
 (defn get-patient [id]
-  (if-let [patient (first (util/search-patients {:id id}))]
+  (if-let [patient (util/get-patient id)]
     (ok patient)
     (bad-request "fail")))
 
@@ -55,46 +50,6 @@
 
 ; UPDATE
 (defn update-patient [id update]
-  (let [p (get-patient id)]
-    (when (and (not (empty? update)) p (empty? (util/false-validations (merge (:body p) update))))
-      (j/update! db :patients update ["id = ?" id]))))
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(comment
-
-  ;; VALIDATE
-
-  (validate-map patient)
-
-  (validate-map query {:sex is-sex?})
-
-
-  (validate-map (merge Igor {:date {:method :less :value (date "2000-01-01")}})
-                )
-
-  {:errors [:birthdate :sex]}
-
-   ;; Все збс
-   nil
-   ;; add, delete, update, delete
-   {:error-type :invalid-keys
-    :value      [:birthdate :sex]}
-   ;; add
-   {:error-type :already-exists}
-
-   ;; internal validate for create
-   ;(defn- valid-add? [patient]
-   ;  (and
-   ;    ((false-validations patient))
-   ;;    (empty? (search-patients (select-keys patient [:id])))))
-   ;
-   ;{:error-type}
-   ;
-   ;{:ok false
-   ; :value '()}
-
-   )
+  (if (util/update-patient id update)
+    (ok)
+    (bad-request "fail")))

@@ -31,7 +31,7 @@
 
 
 
-(def keywords [:id :address :sex :birthdate :full_name :medical_policy])
+(def keywords #{:id :address :sex :birthdate :full_name :medical_policy})
 
 (defn
   ^{:example '(date "2020-01-01")}
@@ -58,6 +58,15 @@
         :birthdate (date "2002-01-10"),
         :address "Yerevan",
         :sex     "molle"
+        :medical_policy 2533335203525})
+
+(def
+  ^{:private true}
+  acrobat {:full_name "Igor Alexandrovich Senushkin",
+        :birthdate (date "2002-01-10"),
+        :address "Yerevan",
+        :sex     "molle"
+        :acrobat "inavalid key"
         :medical_policy 2533335203525})
 
 
@@ -114,7 +123,7 @@
 
 
 (defn-
-  ^{:example '(validate-schema ivan)}
+  ^{:example '(validate-schema acrobat)}
   validate-schema
   "get all paramas as true/false
  Arguments:
@@ -125,11 +134,16 @@
   ([patient]
    (validate-schema patient default-schema))
   ([patient schema]
-   (into {} (map (fn [[key validator]] {key (validator (key patient))}) schema))))
-
+   (into {}
+         (merge
+           ;; Apply validator from valid keys.
+           (map (fn [[key validator]] {key (validator (key patient))}) schema)
+           ;; Detect invalid keys.
+           (into {} (map (fn [[key _]] [key false])
+                         (filter #(not (contains? keywords (first %))) patient)))))))
 
 (defn
-  ^{:example '(false-validations ivan)}
+  ^{:example '(false-validations acrobat)}
   false-validations
   "get list of ivalid params
   Arguments:
@@ -193,3 +207,13 @@
                  (remove nil?)
                  (into []))]
     (j/query db (concat query values))))
+
+
+(defn get-patient [id]
+  (first (search-patients {:id id})))
+
+
+(defn update-patient [id update]
+  (let [p (get-patient id)]
+    (when (and (not (empty? update)) p (empty? (false-validations (merge p update))))
+      (j/update! db :patients update ["id = ?" id]))))
