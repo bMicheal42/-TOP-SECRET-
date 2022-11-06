@@ -3,7 +3,9 @@
 GKE_PROJECT=river-bruin-366614
 GKE_CLUSTER=health-samurai-cluster
 GKE_SERVICE_ACCOUNT=health-samurai-serviceaccount
-GKE_ZONE=europe-west3
+GKE_REGION=europe-west3
+GKE_ZONE=europe-west3-a
+GKE_ZONE2=europe-west3-c
 
 gcloud config set project $GKE_PROJECT
 # Delete the cluster

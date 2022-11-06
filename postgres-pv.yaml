@@ -10,8 +10,8 @@ allowedTopologies:
   - matchLabelExpressions:
       - key: failure-domain.beta.kubernetes.io/zone
         values:
-          - $GKE_ZONE
-          - $GKE_ZONE2
+          - europe-west2-a #europe-west-a
+          - europe-west2-c #europe-west2-c
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

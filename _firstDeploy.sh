@@ -1,9 +1,13 @@
 #!/bin/bash
 
-# Create a project and set GKE_PROJECT to the project id:
-# See https://console.cloud.google.com/projectselector2/home/dashboard
+# Connect to Postgres
+#psql --host 35.246.185.186 -U postgres -p 5432
+#lein migratus migrate
+#lein migratus rollback
 
-# Set parameters§
+
+
+# Set parameters
 export GKE_PROJECT=river-bruin-366614
 export GKE_CLUSTER=health-samurai-cluster
 export GKE_APP_NAME=health-samurai-crud
@@ -14,9 +18,9 @@ export GITHUB_SHA=FirstDeploy
 #
 # Get a list of zones:
 # $ gcloud compute zones list
-export GKE_REGION=europe-west3
-export GKE_ZONE=europe-west3-a
-export GKE_ZONE2=europe-west3-c
+export GKE_REGION=europe-west2
+export GKE_ZONE=europe-west2-a
+export GKE_ZONE2=europe-west2-c
 
 
 # Just a placeholder for the first deployment

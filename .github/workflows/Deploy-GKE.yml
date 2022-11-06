@@ -11,9 +11,9 @@ env:
   GKE_SERVICE: health-samurai-service
   GKE_SERVICE_ACCOUNT: health-samurai-serviceaccount
   GKE_DEPLOYMENT_NAME: health-samurai-crud-deployment
-  GKE_REGION: europe-west3
-  GKE_ZONE: europe-west3-a
-  GKE_ZONE2: europe-west3-c
+  GKE_REGION: europe-west2
+  GKE_ZONE: europe-west2-a
+  GKE_ZONE2: europe-west2-c
 
 jobs:
   Build:
