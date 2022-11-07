@@ -43,38 +43,79 @@
 
 ; READ TESTS
 (deftest test-http-list-patients
-  (is (= (:status (http/list-patients)) 200))
-  (is (not-empty (:body (http/list-patients))))
-  (is (= (count (:body (http/list-patients))) 4)))
+  (is (= 200
+         (:status (http/list-patients))))
+  (is (not-empty
+        (:body (http/list-patients))))
+  (is (= 4
+         (count (:body (http/list-patients))))))
 
 
-(deftest test-get-patient-valid
-  (is (= (:status (http/get-patient 1)) 200))
-  (is (= (:full_name (:body (http/get-patient 1))) "Ivan Ivanov")))
+(deftest test-http-get-patient-valid
+  (is (= 200
+         (:status (http/get-patient 1))))
+  (is (= "Ivan Ivanov"
+         (:full_name (:body (http/get-patient 1))))))
 
-(deftest test-get-patient-invalid
-  (is (= (:status (http/get-patient 13)) 400))
-  (is (= (:body (http/get-patient 13)) "fail"))
-  (is (= (:status (http/get-patient "13")) 400))
-  (is (= (:body (http/get-patient "13")) "fail")))
-
-;(deftest test-added (with-db-rollback [tx *db*]
-;                  (binding [*db* tx]
-;                    (untitled.crud_http/add-patient petr)
-;                    (is (untitled.crud_http/validate-search-patients {:medical_policy 2000020135203525})))))
-
-;(defn fix-factory [type number]
-;  (fn [t]
-;    (println (format "%s %s starts" type number))
-;    (t)
-;    (println (format "%s %s ends" type number))))
-;
-;(use-fixtures :once
-;              (fix-factory :once 1)
-;              (fix-factory :once 2))
-;
-;(use-fixtures :each
-;              (fix-factory :each 3)
-;              (fix-factory :each 4))
+(deftest test-http-get-patient-invalid
+  (is (= 400
+         (:status (http/get-patient 13))))
+  (is (= "fail"
+         (:body (http/get-patient 13))))
+  (is (= 400
+         (:status (http/get-patient "13"))))
+  (is (= "fail"
+         (:body (http/get-patient "13")))))
 
 
+(deftest test-http-validate-search-patients-valid
+  (is (= 200
+         (:status (http/validate-search-patients {:sex "male"}))))
+  (is (= "Ivan Ivanov"
+         (:full_name (first (:body (http/validate-search-patients {:sex "male"}))))))
+  (is (= 1234502312334341
+         (:medical_policy (first (:body (http/validate-search-patients {:full_name "Kirill Strebkov"}))))))
+  (is (= "Ivan Ivanov"
+         (:full_name (first (:body (http/validate-search-patients {:address "Moscow"}))))))
+  (is (= "Alexandra Ershova"
+         (:full_name (first (:body (http/validate-search-patients {:medical_policy 1000563123232341}))))))
+  (is (= "Alexandra Ershova"
+         (:full_name (first (:body (http/validate-search-patients {:id 3}))))))
+  (is (= "Kirill Strebkov"
+         (:full_name (first (:body (http/validate-search-patients {:sex "male" :address "New-York"}))))))
+  (is (= 2
+         (count (:body (http/validate-search-patients {:sex "male"})))))
+  (is (= "Ivan Ivanov"
+         (:full_name (first (:body (http/validate-search-patients {:birthdate (util/date "1990-04-03")}))))))
+  (is (= "Ivan Ivanov"
+         (:full_name (first (:body (http/validate-search-patients
+                                     {:birthdate {:method :less :value (util/date "1990-04-10")}}))))))
+  (is (= 2
+         (count (:body (http/validate-search-patients
+                         {:birthdate {:method :less :value (util/date "1990-04-10")}}))))))
+
+(deftest test-http-validate-search-patients-valid-no-results
+  (is (= 200
+         (:status (http/validate-search-patients {:address "KAZANTIP"}))))
+  (is (empty?
+        (:body (http/validate-search-patients {:address "KAZANTIP"})))))
+
+(deftest test-http-validate-search-patients-invalid-params
+  (is (= 400
+         (:status (http/validate-search-patients {:address 1323}))))
+  (is (= :address
+         (first (:value (:body (http/validate-search-patients {:address 1323}))))))
+  (is (= :sex
+         (first (:value (:body (http/validate-search-patients {:sex "nogender"}))))))
+  (is (= :full_name
+         (first (:value (:body (http/validate-search-patients {:full_name 1323}))))))
+  (is (= :medical_policy
+         (first (:value (:body (http/validate-search-patients {:medical_policy 123}))))))
+  (is (= :birthdate
+         (first (:value (:body (http/validate-search-patients {:birthdate 124412})))))))
+  (is (= :invalid-keys
+         (:error-type (:body (http/validate-search-patients
+                               {:birthdate {:method :invalid-method :value (util/date "1990-04-10")}})))))
+  (is (= :birthdate
+       (first (:value (:body (http/validate-search-patients
+                               {:birthdate {:method :invalid-method :value (util/date "1990-04-10")}}))))))
