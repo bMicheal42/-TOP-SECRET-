@@ -4,7 +4,7 @@
   (:require [clojure.java.jdbc :as j]
             [compojure.core :refer :all]
             [ring.util.http-response :refer :all]
-            [untitled.db :refer [db]])
+            [untitled.db :refer [*db*]])
   (:import
     (java.time LocalDate)
     (java.sql Date)))
@@ -78,7 +78,7 @@
  - list of hash-maps with all users
  - empty if no users"
   []
-  (j/query db ["select * from patients"]))
+  (j/query *db* ["select * from patients"]))
 
 
 ;; Helper validators
@@ -207,7 +207,7 @@
                        (keyword params))))
                  (remove nil?)
                  (into []))]
-    (j/query db (concat query values))))
+    (j/query *db* (concat query values))))
 
 
 (defn
@@ -237,8 +237,8 @@
   [id update]
   (if (integer? id)
     (let [p (get-patient id)]
-    (when (and (not (empty? update)) p (empty? (false-validations (merge p update))))
-      (j/update! db :patients update ["id = ?" id])))))
+      (when (and (not (empty? update)) p (empty? (false-validations (merge p update))))
+        (j/update! *db* :patients update ["id = ?" id])))))
 
 
 (defn
@@ -252,4 +252,4 @@
   - nil if wrong id format"
   [id]
   (if (integer? id)
-    (not (= 0 (first (j/delete! db :patients ["id = ?" id]))))))
+    (not (= 0 (first (j/delete! *db* :patients ["id = ?" id]))))))

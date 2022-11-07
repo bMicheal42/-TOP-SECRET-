@@ -47,5 +47,5 @@
          assoc
          :jetty
          (ring/run-jetty (fn [req] (app req))
-                          {:port (env :PORT)
+                          {:port (Integer/parseInt (env :PORT))
                            :join? false})))

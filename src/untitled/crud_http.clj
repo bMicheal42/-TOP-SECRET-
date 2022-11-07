@@ -3,7 +3,7 @@
   (:require [clojure.java.jdbc :as j]
             [compojure.core :refer :all]
             [ring.util.http-response :refer :all]
-            [untitled.db :refer [db]]
+            [untitled.db :refer [*db*]]
             [untitled.crud_util :as util]))
 
 ;; READ
@@ -68,7 +68,7 @@
     (if (empty? valid-errors)
       (if (empty? (util/search-patients patient))
        (do
-         (let [new-patient (first (j/insert! db :patients patient))]
+         (let [new-patient (first (j/insert! *db* :patients patient))]
            (created "/patient" new-patient)))
        (bad-request {:error-type :already-exists}))
       (bad-request {:error-type :invalid-keys
@@ -102,7 +102,7 @@
   - hash-map with :status 201 and :body with hash-map created user
   - hash-map with :status 400 and :body with errors"
   [id]
-  (if-not (= 0 (first (j/delete! db :patients ["id = ?" id])))
+  (if-not (= 0 (first (j/delete! *db* :patients ["id = ?" id])))
     (found "/")
     (bad-request "fail")))
 

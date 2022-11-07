@@ -4,17 +4,23 @@
             [compojure.core     :refer :all]
             ))
 
-(def db {:dbtype "postgresql"
-         :dbname "postgres"
-         :host (env :DB_HOST)
-         :port (env :DB_PORT)
-         :user (env :DB_USER)
+;(defmacro with-db-rollback
+;  [[t-conn & bindings] & body]
+;  `(jdbc/with-db-transaction [~t-conn ~@bindings]
+;                             (jdbc/db-set-rollback-only! ~t-conn)
+;                             ~@body))
+
+(def ^:dynamic *db* {:dbtype "postgresql"
+         :dbname   "postgres"
+         :host     (env :DB_HOST)
+         :port     (env :DB_PORT)
+         :user     (env :DB_USER)
          :password (env :DB_PASSWORD)})
 
 (def config
-  {:store :database
+  {:store         :database
    :migration-dir "migrations"
-   :db db})
+   :db            *db*})
 
 
 ;(migratus/init config)
