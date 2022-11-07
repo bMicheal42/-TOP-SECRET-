@@ -75,7 +75,7 @@
   Arguments:
  - no
  Returns:
- - hash-map with all users
+ - list of hash-maps with all users
  - empty if no users"
   []
   (j/query db ["select * from patients"]))
@@ -109,7 +109,7 @@
 (def
   ^{:example '((:birthdate search-schema) {:method :less :value (date "1990-01-01")})}
   search-schema
-  "Uupdated static scheme with reloaded birthdat method
+  "Updated static scheme with reloaded birthdat method
   because search query :birthdate can be {:method :less :value ...} for example."
   (merge
     default-schema
@@ -209,11 +209,30 @@
     (j/query db (concat query values))))
 
 
-(defn get-patient [id]
+(defn
+  ^{:example '(get-patient 3)}
+  get-patient
+  "get patient by id
+  Arguments:
+  - int id
+  Returns:
+  - hash-map with a user
+  - nil if no user found"
+  [id]
   (first (search-patients {:id id})))
 
 
-(defn update-patient [id update]
+(defn
+  ^{:example '(update-patient 3 {:sex "female"})}
+  update-patient
+  "update patient found by id with some params
+  Arguments:
+  - int id
+  - hash-map params
+  Returns:
+  - list with updated number
+  - nil if no update done"
+  [id update]
   (let [p (get-patient id)]
     (when (and (not (empty? update)) p (empty? (false-validations (merge p update))))
       (j/update! db :patients update ["id = ?" id]))))
