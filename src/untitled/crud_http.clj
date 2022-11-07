@@ -7,12 +7,29 @@
             [untitled.crud_util :as util]))
 
 ;; READ
-(defn list-patients []
+(defn list-patients
+  "list all patients from db table patients
+  Arguments:
+  - no
+  Returns:
+  - hash-map with status 200/ and user hash-map in body
+  - empty body if no users"
+  []
   (ok (util/list-patients)))
 
 
 ;; SEARCH / FILTER
-(defn validate-search-patients [query]
+(defn
+  ^{:example '(validate-search-patients {:sex "male" :birthdate {:method :less :value (date "1993-04-04")}})}
+  validate-search-patients
+  "search by one or more params / also works like filter / handle not valid keywords
+  with keyword validation
+   Arguments:
+   - hash-map of params
+   Returns:
+   - hash-map with :status 200 and :body with list of hash-maps found user/users
+   - hash-map with :status 400 and :body with errors hash-map / empty"
+  [query]
   (let [valid-errors (util/false-validations query (select-keys util/search-schema (map first query)))]
     (if (empty? valid-errors)
       (ok (util/search-patients query))
@@ -21,14 +38,32 @@
 
 
 ;; GET patient by id
-(defn get-patient [id]
+(defn
+  ^{:example '(get-patient 3)}
+  get-patient
+  "get patient by id
+  Arguments:
+  - int id
+  Returns:
+  - hash-map with :status 200 and :body with hash-map found user
+  - hash-map with :status 400 and :body fail"
+  [id]
   (if-let [patient (util/get-patient id)]
     (ok patient)
     (bad-request "fail")))
 
 
 ;; CREATE PATIENT
-(defn add-patient "description" [patient]
+(defn
+  ^{:example '(add-patient util/igor)}
+  add-patient
+  "add patient by its params
+  Arguments:
+  - hash-map with patient params
+  Returns:
+  - hash-map with :status 201 and :body with hash-map - created user
+  - hash-map with :status 400 and :body with errors"
+  [patient]
   (let [valid-errors (util/false-validations patient)]
     (if (empty? valid-errors)
       (if (empty? (util/search-patients patient))
@@ -40,16 +75,36 @@
                     :value      valid-errors}))))
 
 
+; UPDATE
+(defn
+  ^{:example '(update-patient 2 {:sex "male"})}
+  update-patient
+  "update patient found by id with some params
+  Arguments:
+  - int id
+  - hash-map params
+  Returns:
+  - hash-map with :status 201 and :body nil
+  - hash-map with :status 400 and :body with fail"
+  [id update]
+  (if (util/update-patient id update)
+    (ok)
+    (bad-request "fail")))
+
 ;; DELETE
-(defn delete-patient [id]
-  "Deletes a patient given an medical policy. Returns true if deletion was successful."
-  (if (not (= 0 (first (j/delete! db :patients ["id = ?" id]))))
+(defn
+  ^{:example '(delete-patient 3)}
+  delete-patient
+  "add patient by its params
+  Arguments:
+  - int id
+  Returns:
+  - hash-map with :status 201 and :body with hash-map created user
+  - hash-map with :status 400 and :body with errors"
+  [id]
+  (if-not (= 0 (first (j/delete! db :patients ["id = ?" id])))
     (found "/")
     (bad-request "fail")))
 
 
-; UPDATE
-(defn update-patient [id update]
-  (if (util/update-patient id update)
-    (ok)
-    (bad-request "fail")))
+

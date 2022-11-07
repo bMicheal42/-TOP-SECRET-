@@ -45,7 +45,7 @@
   (Date/valueOf (LocalDate/parse date)))
 
 (def
-  ^{:private true}
+  ;^{:private true}
   igor {:full_name      "Igor Alexandrovich Senushkin",
         :birthdate      (date "1992-08-24"),
         :sex            "male",
@@ -53,7 +53,7 @@
         :medical_policy 2535223335203525})
 
 (def
-  ^{:private true}
+  ;^{:private true}
   ivan {:full_name "Igor Alexandrovich Senushkin",
         :birthdate (date "2002-01-10"),
         :address "Yerevan",
@@ -175,10 +175,11 @@
   ^{:example '(search-patients {:sex "male" :birthdate {:method :less :value (date "1993-04-04")}})}
   search-patients
   "search by one or more params / also works like filter / handle not valid keywords
+  no keyword validation
    Arguments:
    - hash-map of params
    Returns:
-   - hash-map with found users
+   - list of hash-maps with found users
    - empty if no users found"
   [params]
   (let [query [(->>
@@ -217,22 +218,38 @@
   - int id
   Returns:
   - hash-map with a user
-  - nil if no user found"
+  - nil if no user found / wrong id format"
   [id]
-  (first (search-patients {:id id})))
+  (if (integer? id)
+    (first (search-patients {:id id}))))
 
 
 (defn
-  ^{:example '(update-patient 3 {:sex "female"})}
+  ^{:example '(update-patient 22 {:sex "male"})}
   update-patient
   "update patient found by id with some params
   Arguments:
   - int id
   - hash-map params
   Returns:
-  - list with updated number
-  - nil if no update done"
+  - (1) if success
+  - nil if no update done / wrong id format"
   [id update]
-  (let [p (get-patient id)]
+  (if (integer? id)
+    (let [p (get-patient id)]
     (when (and (not (empty? update)) p (empty? (false-validations (merge p update))))
-      (j/update! db :patients update ["id = ?" id]))))
+      (j/update! db :patients update ["id = ?" id])))))
+
+
+(defn
+  ^{:example '(delete-patient 3)}
+  delete-patient
+  "add patient by its params
+  Arguments:
+  - int id
+  Returns:
+  - true if patient was deleted / fasle if not
+  - nil if wrong id format"
+  [id]
+  (if (integer? id)
+    (not (= 0 (first (j/delete! db :patients ["id = ?" id]))))))
