@@ -1,13 +1,11 @@
-(ns untitled.core-test
+(ns untitled.read_test
   (:require
     [clojure.java.jdbc :as j]
     [clojure.test :refer :all]
     [untitled.core :refer :all]
     [untitled.crud_http :as http]
     [untitled.crud_util :as util]
-    [untitled.db :refer :all]
-    [migratus.core :as migratus])
-  (:import (org.eclipse.jetty.server.session Session)))
+    [untitled.db :refer :all]))
 
 
 (def db-data
@@ -16,30 +14,13 @@
   {:full_name "Alexandra Ershova" :sex "female" :address "Moscow" :birthdate (util/date "1991-01-01") :medical_policy 1000563123232341}
   {:full_name "Marina Nikitina" :sex "female" :address "New-York" :birthdate (util/date "1959-12-31") :medical_policy 1234563123230001}])
 
-(defn fix-db-prepare-data [t]
+(defn fix-db-prepare-data-read [t]
   (j/execute! *db* ["TRUNCATE TABLE patients RESTART IDENTITY"])
   (doseq [rows db-data]
     (j/insert! *db* :patients rows))
   (t))
 
-
-(use-fixtures :once fix-db-prepare-data)
-
-;
-;(def
-;  ;^{:private true}
-;  petr {:full_name      "Petr tmeizo",
-;        :birthdate      (util/date "1992-08-24"),
-;        :sex            "male",
-;        :address        "Yerevan",
-;        :medical_policy 2000020135203525})
-
-
-(defmacro with-db-rollback
-  [[t-conn & bindings] & body]
-  `(j/with-db-transaction [~t-conn ~@bindings]
-                          (j/db-set-rollback-only! ~t-conn)
-                          ~@body))
+(use-fixtures :once fix-db-prepare-data-read)
 
 
 ; READ TESTS

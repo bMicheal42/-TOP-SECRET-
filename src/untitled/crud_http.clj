@@ -99,10 +99,10 @@
   Arguments:
   - int id
   Returns:
-  - hash-map with :status 201 and :body with hash-map created user
-  - hash-map with :status 400 and :body with errors"
+  - hash-map with :status 302 and :body (empty)
+  - hash-map with :status 400 and :body with fail"
   [id]
-  (if-not (= 0 (first (j/delete! *db* :patients ["id = ?" id])))
+  (if (util/delete-patient id)
     (found "/")
     (bad-request "fail")))
 
