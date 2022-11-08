@@ -1,4 +1,4 @@
-(ns untitled.read_test
+(ns untitled.read-test
   (:require
     [clojure.java.jdbc :as j]
     [clojure.test :refer :all]
@@ -15,14 +15,23 @@
   {:full_name "Alexandra Ershova" :sex "female" :address "Moscow" :birthdate (util/date "1991-01-01") :medical_policy 1000563123232341}
   {:full_name "Marina Nikitina" :sex "female" :address "New-York" :birthdate (util/date "1959-12-31") :medical_policy 1234563123230001}])
 
-(defn fix-db-prepare-data-read [t]
-  (j/execute! *db* ["TRUNCATE TABLE patients RESTART IDENTITY"])
-  (doseq [rows db-data]
-    (j/insert! *db* :patients rows))
-  (t)
-  (migratus/migrate config))
 
-(use-fixtures :once fix-db-prepare-data-read)
+(defmacro with-db-rollback
+  [[t-conn & bindings] & body]
+  `(j/with-db-transaction [~t-conn ~@bindings]
+                          (j/db-set-rollback-only! ~t-conn)
+                          ~@body))
+
+(defn fix-prepare-db [t]
+  (with-db-rollback [tx *db*]
+                    (binding [*db* tx]
+                      (j/execute! *db* ["TRUNCATE TABLE patients RESTART IDENTITY"])
+                      (doseq [rows db-data]
+                            (j/insert! *db* :patients rows))
+                      (t))))
+
+
+(use-fixtures :once fix-prepare-db)
 
 
 ; READ TESTS

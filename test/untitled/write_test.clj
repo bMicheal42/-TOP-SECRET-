@@ -26,12 +26,6 @@
                  :medical_policy 525})
 
 
-(defn fix-db-prepare-data-write [t]
-  (j/execute! *db* ["TRUNCATE TABLE patients RESTART IDENTITY"])
-  (t)
-  (migratus/migrate config))
-
-
 (defmacro with-db-rollback
   [[t-conn & bindings] & body]
   `(j/with-db-transaction [~t-conn ~@bindings]
@@ -44,7 +38,13 @@
                       (t))))
 
 
-(use-fixtures :once fix-db-prepare-data-write)
+(defn fix-prepare-db [t]
+  (with-db-rollback [tx *db*]
+                    (binding [*db* tx]
+                      (j/execute! *db* ["TRUNCATE TABLE patients RESTART IDENTITY"])
+                      (t))))
+
+(use-fixtures :once fix-prepare-db)
 (use-fixtures :each fix-rollback)
 
 
