@@ -2,6 +2,7 @@
   (:require
     [clojure.java.jdbc :as j]
     [clojure.test :refer :all]
+    [migratus.core :as migratus]
     [untitled.core :refer :all]
     [untitled.crud_http :as http]
     [untitled.crud_util :as util]
@@ -18,7 +19,8 @@
   (j/execute! *db* ["TRUNCATE TABLE patients RESTART IDENTITY"])
   (doseq [rows db-data]
     (j/insert! *db* :patients rows))
-  (t))
+  (t)
+  (migratus/migrate config))
 
 (use-fixtures :once fix-db-prepare-data-read)
 

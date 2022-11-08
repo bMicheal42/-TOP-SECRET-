@@ -2,6 +2,7 @@
   (:require
     [clojure.java.jdbc :as j]
     [clojure.test :refer :all]
+    [migratus.core :as migratus]
     [untitled.core :refer :all]
     [untitled.crud_http :as http]
     [untitled.crud_util :as util]
@@ -27,7 +28,8 @@
 
 (defn fix-db-prepare-data-write [t]
   (j/execute! *db* ["TRUNCATE TABLE patients RESTART IDENTITY"])
-  (t))
+  (t)
+  (migratus/migrate config))
 
 
 (defmacro with-db-rollback
@@ -95,5 +97,4 @@
   (testing "delete invalid param"
     (is (= "fail" (:body (http/delete-patient "14")))))
   (testing "1 patient in db after delete"
-    (is (= 1 (count (:body (http/list-patients))))))
-  )
+    (is (= 1 (count (:body (http/list-patients)))))))
