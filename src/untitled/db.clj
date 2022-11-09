@@ -5,7 +5,7 @@
 
 (def ^:dynamic *db* {:dbtype "postgresql"
          :dbname   "postgres"
-         :host     "34.142.30.44"
+         :host     "35.246.52.38"
          :port     "5432"
          :user     "postgres"
          :password "password"})
