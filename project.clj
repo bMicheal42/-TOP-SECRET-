@@ -17,10 +17,8 @@
                  [org.postgresql/postgresql "42.5.0"]
                  [migratus "1.4.5"]
                  [compojure "1.6.3"]
-                 [funcool/struct "1.3.0"]
+                 [funcool/struct "1.4.0"]
                  [hiccup "1.0.5"]
-                 [fogus/ring-edn "0.3.0"]
-                 ]
+                 [fogus/ring-edn "0.3.0"]]
   :repl-options {:init-ns untitled.core}
-  :main untitled.core
-)
+  :main untitled.core)

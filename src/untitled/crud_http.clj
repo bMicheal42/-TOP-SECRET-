@@ -104,7 +104,7 @@
   [id]
   (if (util/delete-patient id)
     (found "/")
-    (bad-request "fail")))
+    (bad-request (str "fail: id=" id))))
 
 
 

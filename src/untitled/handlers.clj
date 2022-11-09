@@ -1,7 +1,8 @@
 (ns untitled.handlers
   (:require [clojure.edn      :as edn]
             [untitled.crud_http    :refer :all]
-            [compojure.core   :refer :all])
+            [compojure.core   :refer :all]
+            [compojure.coercions :refer [as-int]])
   (:use     [hiccup.core]))
 
 
@@ -30,10 +31,10 @@
 (defroutes myRoutes
            (context  "/api/v1/patients" []
                      (GET  "/" [] (list-patients))
-                     (GET "/search" request (order-form request))
-                     (GET "/create" request (http-edn-wrapper request))
-                     (context "/:id" [id sex address :as request]
-                              (GET  "/" request (order-view "lol"))
-                              (PUT  "/update" request (http-edn-wrapper request))
-                              (DELETE  "/delete" request (custom-page request))))
+                     (GET "/search" identity)
+                     (GET "/create" identity)
+                     (context "/:id" [id]
+                              (GET  "/"  identity)
+                              (PUT  "/update"  identity)
+                              (DELETE  "/delete" [] (delete-patient (Integer/parseInt id)))))
            (page-404))
