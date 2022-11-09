@@ -15,9 +15,17 @@ spec:
     spec:
       containers:
         - name: $GKE_APP_NAME
-          imag e: gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA
+          image: gcr.io/$GKE_PROJECT/health-samurai:$GITHUB_SHA
           ports:
             - containerPort: 80
           env:
             - name: PORT
               value: "80"
+            - name: DB_HOST
+              value: "35.246.52.38"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: "postgres"
+            - name: DB_PASSWORD
+              value: "password"
