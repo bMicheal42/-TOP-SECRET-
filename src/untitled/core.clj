@@ -47,5 +47,5 @@
 (defn -main [& args]
   (migratus/migrate config)
   (reset! server
-         (let [port (or (Integer/parseInt (env :PORT)) 50)]
+         (let [port (or (Integer/parseInt (env :PORT)) 80)]
            (start port))))
