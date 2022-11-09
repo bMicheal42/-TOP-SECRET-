@@ -2,13 +2,12 @@
   (:require [dotenv :refer [env]]
             [compojure.core     :refer :all]))
 
-
 (def ^:dynamic *db* {:dbtype "postgresql"
          :dbname   "postgres"
-         :host     "35.246.52.38"
-         :port     "5432"
-         :user     "postgres"
-         :password "password"})
+         :host     (env :DB_HOST)
+         :port     (env :DB_PORT)
+         :user     (env :DB_USER)
+         :password (env :DB_PASSWORD)})
 
 (def config
   {:store         :database
