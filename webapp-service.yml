@@ -4,7 +4,7 @@ metadata:
   name: $GKE_SERVICE
 spec:
   type: LoadBalancer
-  loadBalancerIP: 34.105.208.84
+  loadBalancerIP: $IP_WEB
   selector:
     app: $GKE_APP_NAME
   ports:

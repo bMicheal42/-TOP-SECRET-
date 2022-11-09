@@ -8,4 +8,4 @@ spec:
   selector:
     app: postgres
   type: LoadBalancer
-  loadBalancerIP: 35.246.52.38
+  loadBalancerIP: $IP_DB
