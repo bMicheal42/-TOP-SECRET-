@@ -5,10 +5,10 @@
 
 (def ^:dynamic *db* {:dbtype "postgresql"
          :dbname   "postgres"
-         :host     (env :DB_HOST)
-         :port     (env :DB_PORT)
-         :user     (env :DB_USER)
-         :password (env :DB_PASSWORD)})
+         :host     "34.142.30.44"
+         :port     "5432"
+         :user     "postgres"
+         :password "password"})
 
 (def config
   {:store         :database
