@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Connect to Postgres
-#psql --host 35.246.185.186 -U postgres -p 5432
-#lein migratus migrate
-#lein migratus rollback
-
-
-
 # Set parameters
 export GKE_PROJECT=river-bruin-366614
 export GKE_CLUSTER=health-samurai-cluster
@@ -14,7 +7,6 @@ export GKE_APP_NAME=health-samurai-crud
 export GKE_SERVICE=health-samurai-service
 export GKE_SERVICE_ACCOUNT=health-samurai-serviceaccount
 export GKE_DEPLOYMENT_NAME=health-samurai-crud-deployment
-export GITHUB_SHA=FirstDeploy
 #
 # Get a list of zones:
 # $ gcloud compute zones list
@@ -24,7 +16,7 @@ export GKE_ZONE2=europe-west2-c
 
 
 # Just a placeholder for the first deployment
-export GITHUB_SHA=First-deploy
+export GITHUB_SHA=first_deploy
 
 gcloud config set project $GKE_PROJECT
 gcloud config set compute/zone $GKE_ZONE
