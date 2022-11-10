@@ -153,7 +153,7 @@
   - list of ivalid params"
   ([patient] (false-validations patient default-schema))
   ([patient schema]
-   (map first (filter #(not (second %)) (validate-schema patient schema)))))
+   (keys (filter #(not (second %)) (validate-schema patient schema)))))
 
 
 (defn-
@@ -205,7 +205,6 @@
                                                 (if (map? birthdate)
                                                   (:value birthdate)
                                                   birthdate))
-                       (= keyword :id)  (let [int-id (Integer/parseInt (:id params))] int-id)
                        :else  (keyword params)
                        )))
                  (remove nil?)

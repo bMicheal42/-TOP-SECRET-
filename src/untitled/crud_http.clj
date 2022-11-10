@@ -4,6 +4,7 @@
             [compojure.core :refer :all]
             [ring.util.http-response :refer :all]
             [untitled.db :refer [*db*]]
+            [compojure.coercions :refer :all]
             [untitled.crud_util :as util]))
 
 ;; READ
@@ -30,7 +31,8 @@
    - hash-map with :status 200 and :body with list of hash-maps found user/users / empty if no user found
    - hash-map with :status 400 and :body with errors hash-map"
   [query]
-  (let [valid-errors (util/false-validations query (select-keys util/search-schema (map first query)))]
+  (let [query (update-in query [:id] as-int)
+        valid-errors (util/false-validations query (select-keys util/search-schema (keys query)))]
     (if (empty? valid-errors)
       (ok (util/search-patients query))
       (bad-request {:error-type :invalid-keys
