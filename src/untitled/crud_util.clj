@@ -183,33 +183,34 @@
    - list of hash-maps with found users
    - empty if no users found"
   [params]
-  (let [query [(->>
-                 (for [keyword keywords]
-                   (when (keyword params)
-                     (str
-                       (name keyword)
-                       " "
-                       (if (= keyword :birthdate) (birthdate-search-method params) "=")
-                       " ?")))
-                 (apply vector)
-                 (remove nil?)
-                 (interpose " and ")
-                 (apply str)
-                 (str "select * from patients where ")
-                 )]
-        values (->>
-                 (for [keyword keywords]
-                   (when (keyword params)
-                     (cond
-                       (= keyword :birthdate) (let [birthdate (:birthdate params)]
-                                                (if (map? birthdate)
-                                                  (:value birthdate)
-                                                  birthdate))
-                       :else  (keyword params)
-                       )))
-                 (remove nil?)
-                 (into []))]
-    (j/query *db* (concat query values))))
+  (if (empty? params) (list-patients)
+                 (let [query [(->>
+                  (for [keyword keywords]
+                    (when (keyword params)
+                      (str
+                        (name keyword)
+                        " "
+                        (if (= keyword :birthdate) (birthdate-search-method params) "=")
+                        " ?")))
+                  (apply vector)
+                  (remove nil?)
+                  (interpose " and ")
+                  (apply str)
+                  (str "select * from patients where ")
+                  )]
+         values (->>
+                  (for [keyword keywords]
+                    (when (keyword params)
+                      (cond
+                        (= keyword :birthdate) (let [birthdate (:birthdate params)]
+                                                 (if (map? birthdate)
+                                                   (:value birthdate)
+                                                   birthdate))
+                        :else (keyword params)
+                        )))
+                  (remove nil?)
+                  (into []))]
+     (j/query *db* (concat query values)))))
 
 
 (defn

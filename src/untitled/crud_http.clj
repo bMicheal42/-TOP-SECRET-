@@ -31,7 +31,7 @@
    - hash-map with :status 200 and :body with list of hash-maps found user/users / empty if no user found
    - hash-map with :status 400 and :body with errors hash-map"
   [query]
-  (let [query (update-in query [:id] as-int)
+  (let [query (if (:id query) (update-in query [:id] as-int) query)
         valid-errors (util/false-validations query (select-keys util/search-schema (keys query)))]
     (if (empty? valid-errors)
       (ok (util/search-patients query))
