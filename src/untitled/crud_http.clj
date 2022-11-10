@@ -103,8 +103,8 @@
   - hash-map with :status 400 and :body with fail"
   [id]
   (if (util/delete-patient id)
-    (found "/")
-    (bad-request (str "fail: id=" id))))
+    (ok)
+    (bad-request "fail")))
 
 
 

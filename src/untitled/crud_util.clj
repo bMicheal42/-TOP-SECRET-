@@ -99,7 +99,8 @@
   ^{:example '((:sex default-schema) "male")}
   default-schema
   "default static scheme of patient params and its fuction validators"
-  {:address       is-string?
+  {:id             integer?
+   :address        is-string?
    :sex            is-sex?
    :birthdate      is-a-date?
    :full_name      is-string?
@@ -199,12 +200,14 @@
         values (->>
                  (for [keyword keywords]
                    (when (keyword params)
-                     (if (= keyword :birthdate)
-                       (let [birthdate (:birthdate params)]
-                         (if (map? birthdate)
-                           (:value birthdate)
-                           birthdate))
-                       (keyword params))))
+                     (cond
+                       (= keyword :birthdate) (let [birthdate (:birthdate params)]
+                                                (if (map? birthdate)
+                                                  (:value birthdate)
+                                                  birthdate))
+                       (= keyword :id)  (let [int-id (Integer/parseInt (:id params))] int-id)
+                       :else  (keyword params)
+                       )))
                  (remove nil?)
                  (into []))]
     (j/query *db* (concat query values))))

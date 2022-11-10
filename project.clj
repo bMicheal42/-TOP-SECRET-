@@ -19,6 +19,8 @@
                  [compojure "1.6.3"]
                  [funcool/struct "1.4.0"]
                  [hiccup "1.0.5"]
-                 [fogus/ring-edn "0.3.0"]]
+                 [fogus/ring-edn "0.3.0"]
+                 [ring/ring-defaults "0.3.4"]
+                 [ring/ring-json "0.5.1"]]
   :repl-options {:init-ns untitled.core}
   :main untitled.core)
