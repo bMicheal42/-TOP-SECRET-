@@ -29,8 +29,6 @@
   - example code for eval"
   `(example-fn (var ~function)))
 
-
-
 (def keywords #{:id :address :sex :birthdate :full_name :medical_policy})
 
 (defn

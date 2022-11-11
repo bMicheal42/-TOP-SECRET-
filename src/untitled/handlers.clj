@@ -10,20 +10,23 @@
     [ring.middleware.json :refer :all])
   (:use     [hiccup.core]))
 
+(defn wrap-empty-params [handler]
+  (fn [request] (handler (:params request))))
+
 (defroutes my-routes
            (ANY "/health" _ "ok")
            (context  "/api/v1/patients" request
              (GET  "/" [] (list-patients))
+             (POST "/" [] (add-patient (:params request)))
              (GET "/search" [] (validate-search-patients (:params request)))
-             (GET "/create" []  "create method")
              (context "/:id" [id :<< as-int]
                (GET "/" [] (get-patient id))
-               (PUT  "/" [] "ok")
+               (PUT "/" [] (update-patient id (:params request)))
                (DELETE  "/" [] (delete-patient id))))
            (route/not-found "page-404"))
 
 (def app
-  (-> (fn [request] (my-routes request))
+  (-> #'my-routes ;; use var as function (fn [request] (my-routes request))
       (wrap-json-response)
       (wrap-keyword-params)
       (wrap-params)))

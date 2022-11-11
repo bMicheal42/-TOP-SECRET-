@@ -32,6 +32,7 @@
    - hash-map with :status 400 and :body with errors hash-map"
   [query]
   (let [query (if (:id query) (update-in query [:id] as-int) query)
+        query (if (:medical_policy query) (update-in query [:medical_policy] as-int) query)
         valid-errors (util/false-validations query (select-keys util/search-schema (keys query)))]
     (if (empty? valid-errors)
       (ok (util/search-patients query))
@@ -66,12 +67,13 @@
   - hash-map with :status 201 and :body with hash-map - created user
   - hash-map with :status 400 and :body with errors"
   [patient]
-  (let [valid-errors (util/false-validations patient)]
+  (let [patient (if (:birthdate patient) (update-in patient [:birthdate] util/date) patient)
+        patient (if (:medical_policy patient) (update-in patient [:medical_policy] as-int) patient)
+        valid-errors (util/false-validations patient (dissoc util/default-schema :id))]
     (if (empty? valid-errors)
-      (if (empty? (util/search-patients patient))
-       (do
+      (if-not (empty? (util/search-patients patient))
          (let [new-patient (first (j/insert! *db* :patients patient))]
-           (created "/patient" new-patient)))
+           (created "/patient" new-patient))
        (bad-request {:error-type :already-exists}))
       (bad-request {:error-type :invalid-keys
                     :value      valid-errors}))))
