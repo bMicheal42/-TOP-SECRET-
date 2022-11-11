@@ -32,6 +32,7 @@
    - hash-map with :status 400 and :body with errors hash-map"
   [query]
   (let [query (if (:id query) (update-in query [:id] as-int) query)
+        query (if (:birthdate query) (update-in query [:birthdate] util/date) query)
         query (if (:medical_policy query) (update-in query [:medical_policy] as-int) query)
         valid-errors (util/false-validations query (select-keys util/search-schema (keys query)))]
     (if (empty? valid-errors)
