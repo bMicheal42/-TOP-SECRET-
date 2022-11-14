@@ -2,7 +2,6 @@
   (:require
     [clojure.java.jdbc :as j]
     [clojure.test :refer :all]
-    [migratus.core :as migratus]
     [untitled.core :refer :all]
     [untitled.crud_http :as http]
     [untitled.crud_util :as util]
@@ -12,18 +11,18 @@
 (def
   ^:private
   valid-patient {:full_name      "Petr tmeizo",
-        :birthdate      (util/date "1992-08-24"),
-        :sex            "male",
-        :address        "Yerevan",
-        :medical_policy 2000020135203525})
+                 :birthdate      "1992-08-24",
+                 :sex            "male",
+                 :address        "Yerevan",
+                 :medical_policy "2000020135203525"})
 
 (def
   ^:private
   invalid-patient {:full_name      "Abraham Linkoln",
-                 :birthdate      (util/date "1992-08-24"),
-                 :sex            "no gender",
-                 :address        "Yerevan",
-                 :medical_policy 525})
+                   :birthdate      "1992-08-24",
+                   :sex            "no gender",
+                   :address        "Yerevan",
+                   :medical_policy "525"})
 
 
 (defmacro with-db-rollback
@@ -59,19 +58,19 @@
      (is (= "male" (:sex (:body response))))
      (is (= "Yerevan" (:address (:body response))))
      (is (= 2000020135203525 (:medical_policy (:body response))))))
-    (testing "1 patient in db after insert"
+  (testing "1 patient in db after insert"
       (is (= 1 (count (:body (http/list-patients))))))
-    (testing "try to create already existing user"
+  (testing "try to create already existing user"
         (is (= :already-exists (:error-type (:body (http/add-patient valid-patient))))))
-    (testing "still 1 patient in db after failed insert"
+  (testing "still 1 patient in db after failed insert"
       (is (= 1 (count (:body (http/list-patients))))))
-    (testing "update parameter :sex female"
+  (testing "update parameter :sex female"
       (is (= 200 (:status (http/update-patient 1 {:sex "female"})))))
-    (testing "delete patient with id 1"
-      (is (= 302 (:status (http/delete-patient 1)))))
-    (testing "0 patient in db after failed insert"
+  (testing "delete patient with id 1"
+      (is (= 200 (:status (http/delete-patient 1)))))
+  (testing "0 patient in db after failed insert"
       (is (= 0 (count (:body (http/list-patients))))))
-    (testing "delete patient with id 1"
+  (testing "failed repeat delete patient with id 1"
       (is (= 400 (:status (http/delete-patient 1))))
       (is (= "fail" (:body (http/delete-patient 1))))))
 

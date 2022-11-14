@@ -4,8 +4,8 @@
             [compojure.core :refer :all]
             [ring.util.http-response :refer :all]
             [untitled.db :refer [*db*]]
-            [compojure.coercions :refer :all]
             [untitled.crud_util :as util]))
+
 
 ;; READ
 (defn list-patients
@@ -21,20 +21,18 @@
 
 ;; SEARCH / FILTER
 (defn
-  ^{:example '(validate-search-patients {:sex "male" :birthdate {:method :less :value (date "1993-04-04")}})}
+  ^{:example '(validate-search-patients {:sex "male" :address "USA"})}
   validate-search-patients
   "search by one or more params / also works like filter / handle not valid keywords
   with keyword validation
    Arguments:
-   - hash-map of params
+   - hash-map of params (values in String format)
    Returns:
    - hash-map with :status 200 and :body with list of hash-maps found user/users / empty if no user found
    - hash-map with :status 400 and :body with errors hash-map"
   [query]
-  (let [query (if (:id query) (update-in query [:id] as-int) query)
-        query (if (:birthdate query) (update-in query [:birthdate] util/date) query)
-        query (if (:medical_policy query) (update-in query [:medical_policy] as-int) query)
-        valid-errors (util/false-validations query (select-keys util/search-schema (keys query)))]
+  (let [query (util/parse-string-args query)
+        valid-errors (util/false-validations query (select-keys util/default-schema (keys query)))]
     (if (empty? valid-errors)
       (ok (util/search-patients query))
       (bad-request {:error-type :invalid-keys
@@ -61,21 +59,20 @@
 (defn
   ^{:example '(add-patient util/igor)}
   add-patient
-  "add patient by its params
+  "add a new patient
   Arguments:
-  - hash-map with patient params
+  - hash-map of params (values in String format) (all params REQUIRED)
   Returns:
   - hash-map with :status 201 and :body with hash-map - created user
   - hash-map with :status 400 and :body with errors"
   [patient]
-  (let [patient (if (:birthdate patient) (update-in patient [:birthdate] util/date) patient)
-        patient (if (:medical_policy patient) (update-in patient [:medical_policy] as-int) patient)
+  (let [patient (util/parse-string-args patient)
         valid-errors (util/false-validations patient (dissoc util/default-schema :id))]
     (if (empty? valid-errors)
-      (if-not (empty? (util/search-patients patient))
+      (if (empty? (util/search-patients patient))
          (let [new-patient (first (j/insert! *db* :patients patient))]
            (created "/patient" new-patient))
-       (bad-request {:error-type :already-exists}))
+         (bad-request {:error-type :already-exists}))
       (bad-request {:error-type :invalid-keys
                     :value      valid-errors}))))
 
@@ -95,6 +92,7 @@
   (if (util/update-patient id update)
     (ok)
     (bad-request "fail")))
+
 
 ;; DELETE
 (defn

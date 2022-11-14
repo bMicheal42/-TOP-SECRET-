@@ -4,6 +4,7 @@
   (:require [clojure.java.jdbc :as j]
             [compojure.core :refer :all]
             [ring.util.http-response :refer :all]
+            [compojure.coercions :refer :all]
             [untitled.db :refer [*db*]])
   (:import
     (java.time LocalDate)
@@ -40,32 +41,35 @@
   Returns:
   - date in Date format"
   [date]
-  (Date/valueOf (LocalDate/parse date)))
+  (try
+    (Date/valueOf (LocalDate/parse date))
+    (catch Exception e nil)))
+
 
 (def
   ;^{:private true}
   igor {:full_name      "Igor Alexandrovich Senushkin",
-        :birthdate      (date "1992-08-24"),
+        :birthdate      "1992-08-24",
         :sex            "male",
         :address        "Yerevan",
-        :medical_policy 2535223335203525})
+        :medical_policy "2535223335203525"})
 
 (def
   ;^{:private true}
   ivan {:full_name "Igor Alexandrovich Senushkin",
-        :birthdate (date "2002-01-10"),
+        :birthdate "2002-01-10",
         :address "Yerevan",
         :sex     "molle"
-        :medical_policy 2533335203525})
+        :medical_policy "2533335203525"})
 
 (def
   ^{:private true}
   acrobat {:full_name "Igor Alexandrovich Senushkin",
-        :birthdate (date "2002-01-10"),
-        :address "Yerevan",
-        :sex     "molle"
-        :acrobat "inavalid key"
-        :medical_policy 2533335203525})
+           :birthdate "2002-01-10",
+           :address "Yerevan",
+           :sex     "molle"
+           :acrobat "inavalid key"
+           :medical_policy "2533335203525"})
 
 
 (defn list-patients
@@ -104,22 +108,32 @@
    :full_name      is-string?
    :medical_policy is-policy?})
 
+;; TODO 2nd release filter by birthdate '<' / '>'
+;(def
+;  ^{:example '((:birthdate search-schema) {:method :less :value (date "1990-01-01")})}
+;  search-schema
+;  "Updated static scheme with reloaded birthdat method
+;  because search query :birthdate can be {:method :less :value ...} for example."
+;  (merge
+;    default-schema
+;    {:birthdate
+;     (fn [x] (or (is-a-date? x)
+;                 (and (map? x)
+;                      (:method x)
+;                      (#{:less :more :equals} (:method x))
+;                      (:value x)
+;                      (is-a-date? (:value x)))))}))
 
-(def
-  ^{:example '((:birthdate search-schema) {:method :less :value (date "1990-01-01")})}
-  search-schema
-  "Updated static scheme with reloaded birthdat method
-  because search query :birthdate can be {:method :less :value ...} for example."
-  (merge
-    default-schema
-    {:birthdate
-     (fn [x] (or (is-a-date? x)
-                 (and (map? x)
-                      (:method x)
-                      (#{:less :more :equals} (:method x))
-                      (:value x)
-                      (is-a-date? (:value x)))))}))
 
+
+(defn parse-string-args
+  "Return params in expecting format
+  (id like int / birthdate like Java Date / medical policy like long)"
+  [query]
+  (let [query (if (:id query) (update-in query [:id] as-int) query)
+        query (if (:birthdate query) (update-in query [:birthdate] date) query)
+        query (if (:medical_policy query) (update-in query [:medical_policy] as-int) query)]
+    query))
 
 (defn-
   ^{:example '(validate-schema acrobat)}
@@ -154,58 +168,49 @@
    (keys (filter #(not (second %)) (validate-schema patient schema)))))
 
 
-(defn-
-  ^{:example '(birthdate-search-method (merge ivan {:birthdate {:method :less}}))}
-  birthdate-search-method
-  "form birthdate sring for sql comparison query
- Arguments:
- - 1st option: Date format
- - 2nd option: hash-map with less/more/equals key
- Returns:
- - string < / > / ="
-  [query]
-  (let [birthdate (:birthdate query)]
-    (cond
-      (map? birthdate) ({:less "<" :more ">" :equals "="} (:method birthdate))
-      (inst? birthdate) "=")))
+;; TODO 2nd release filter by birthdate '<' / '>'
+;(defn-
+;  ^{:example '(birthdate-search-method (merge ivan {:birthdate {:method :less}}))}
+;  birthdate-search-method
+;  "form birthdate sring for sql comparison query
+; Arguments:
+; - 1st option: Date format
+; - 2nd option: hash-map with less/more/equals key
+; Returns:
+; - string < / > / ="
+;  [query]
+;  (let [birthdate (:birthdate query)]
+;    (cond
+;      (map? birthdate) ({:less "<" :more ">" :equals "="} (:method birthdate))
+;      (inst? birthdate) "=")))
 
 
 (defn
-  ^{:example '(search-patients {:sex "male" :birthdate {:method :less :value (date "1993-04-04")}})}
+  ^{:example '(search-patients {:sex "male" :medical_policy 1231321402253324})}
   search-patients
   "search by one or more params / also works like filter / handle not valid keywords
   no keyword validation
    Arguments:
-   - hash-map of params
+   - hash-map of params (in expecting formats)
    Returns:
    - list of hash-maps with found users
    - empty if no users found"
   [params]
-  (if (empty? params) (list-patients)
-                 (let [query [(->>
+  (if (empty? params)
+    (list-patients)
+    (let [query [(->>
                   (for [keyword keywords]
                     (when (keyword params)
-                      (str
-                        (name keyword)
-                        " "
-                        (if (= keyword :birthdate) (birthdate-search-method params) "=")
-                        " ?")))
+                      (str (name keyword) " = ?")))
                   (apply vector)
                   (remove nil?)
                   (interpose " and ")
                   (apply str)
-                  (str "select * from patients where ")
-                  )]
-         values (->>
+                  (str "select * from patients where "))]
+          values (->>
                   (for [keyword keywords]
                     (when (keyword params)
-                      (cond
-                        (= keyword :birthdate) (let [birthdate (:birthdate params)]
-                                                 (if (map? birthdate)
-                                                   (:value birthdate)
-                                                   birthdate))
-                        :else (keyword params)
-                        )))
+                      (keyword params)))
                   (remove nil?)
                   (into []))]
      (j/query *db* (concat query values)))))

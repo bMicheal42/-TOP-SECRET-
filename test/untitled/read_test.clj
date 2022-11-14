@@ -11,9 +11,9 @@
 
 (def db-data
   [{:full_name "Ivan Ivanov" :sex "male" :address "Moscow" :birthdate (util/date "1990-04-03") :medical_policy 1234563123232341}
-  {:full_name "Kirill Strebkov" :sex "male" :address "New-York" :birthdate (util/date "1991-01-01") :medical_policy 1234502312334341}
-  {:full_name "Alexandra Ershova" :sex "female" :address "Moscow" :birthdate (util/date "1991-01-01") :medical_policy 1000563123232341}
-  {:full_name "Marina Nikitina" :sex "female" :address "New-York" :birthdate (util/date "1959-12-31") :medical_policy 1234563123230001}])
+   {:full_name "Kirill Strebkov" :sex "male" :address "New-York" :birthdate (util/date "1991-01-01") :medical_policy 1234502312334341}
+   {:full_name "Alexandra Ershova" :sex "female" :address "Moscow" :birthdate (util/date "1991-01-01") :medical_policy 1000563123232341}
+   {:full_name "Marina Nikitina" :sex "female" :address "New-York" :birthdate (util/date "1959-12-31") :medical_policy 1234563123230001}])
 
 
 (defmacro with-db-rollback
@@ -96,11 +96,11 @@
 
   (testing "search {:medical_policy 1000563123232341} first patient - fullname"
     (is (= "Alexandra Ershova"
-         (:full_name (first (:body (http/validate-search-patients {:medical_policy 1000563123232341})))))))
+         (:full_name (first (:body (http/validate-search-patients {:medical_policy "1000563123232341"})))))))
 
   (testing "search {:id 3} first patient - fullname"
     (is (= "Alexandra Ershova"
-         (:full_name (first (:body (http/validate-search-patients {:id 3})))))))
+         (:full_name (first (:body (http/validate-search-patients {:id "3"})))))))
 
   (testing "search {:sex male} first patient - fullname"
     (is (= "Kirill Strebkov"
@@ -112,17 +112,7 @@
 
   (testing "search {:birthdate 1990-04-03} first patient - fullname"
     (is (= "Ivan Ivanov"
-         (:full_name (first (:body (http/validate-search-patients {:birthdate (util/date "1990-04-03")})))))))
-
-  (testing "search {:birthdate {:method :less :value 1990-04-03}} first patient - fullname"
-    (is (= "Ivan Ivanov"
-         (:full_name (first (:body (http/validate-search-patients
-                                     {:birthdate {:method :less :value (util/date "1990-04-10")}})))))))
-
-  (testing "search {:birthdate {:method :less :value 1990-04-03}} count all patients"
-    (is (= 2
-         (count (:body (http/validate-search-patients
-                         {:birthdate {:method :less :value (util/date "1990-04-10")}})))))))
+         (:full_name (first (:body (http/validate-search-patients {:birthdate "1990-04-03"}))))))))
 
 
 (deftest test-http-validate-search-patients-valid-no-results
@@ -132,7 +122,7 @@
 
   (testing "empty body of unmatched search {:address KAZANTIP}"
     (is (empty?
-        (:body (http/validate-search-patients {:address "KAZANTIP"}))))))
+          (:body (http/validate-search-patients {:address "KAZANTIP"}))))))
 
 
 (deftest test-http-validate-search-patients-invalid-params
@@ -154,18 +144,8 @@
 
   (testing "error value of invalid medical_policy value search"
     (is (= :medical_policy
-         (first (:value (:body (http/validate-search-patients {:medical_policy 123})))))))
+         (first (:value (:body (http/validate-search-patients {:medical_policy "123"})))))))
 
   (testing "error value of invalid birthdate value search"
     (is (= :birthdate
-         (first (:value (:body (http/validate-search-patients {:birthdate 124412})))))))
-
-  (testing "error-type of invalid birthdate method search"
-    (is (= :invalid-keys
-         (:error-type (:body (http/validate-search-patients
-                               {:birthdate {:method :invalid-method :value (util/date "1990-04-10")}}))))))
-
-  (testing "error value of invalid birthdate method search"
-    (is (= :birthdate
-       (first (:value (:body (http/validate-search-patients
-                               {:birthdate {:method :invalid-method :value (util/date "1990-04-10")}}))))))))
+         (first (:value (:body (http/validate-search-patients {:birthdate "124412"}))))))))
