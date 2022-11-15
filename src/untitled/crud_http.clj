@@ -69,7 +69,7 @@
   (let [patient (util/parse-string-args patient)
         valid-errors (util/false-validations patient (dissoc util/default-schema :id))]
     (if (empty? valid-errors)
-      (if (empty? (util/search-patients patient))
+      (if (empty? (util/search-patients  (select-keys patient [:medical_policy])))
          (let [new-patient (first (j/insert! *db* :patients patient))]
            (created "/patient" new-patient))
          (bad-request {:error-type :already-exists}))
@@ -89,7 +89,7 @@
   - hash-map with :status 201 and :body nil
   - hash-map with :status 400 and :body with fail"
   [id update]
-  (if (util/update-patient id update)
+  (if (util/update-patient id (util/parse-string-args update))
     (ok)
     (bad-request "fail")))
 
