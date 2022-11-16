@@ -57,7 +57,7 @@
 
 ;; CREATE PATIENT
 (defn
-  ^{:example '(add-patient util/igor)}
+  ^{:example '(add-patient util/acrobat_for_add)}
   add-patient
   "add a new patient
   Arguments:
@@ -89,9 +89,10 @@
   - hash-map with :status 201 and :body nil
   - hash-map with :status 400 and :body with fail"
   [id update]
-  (if (util/update-patient id (util/parse-string-args update))
-    (ok)
-    (bad-request "fail")))
+  (let [response (util/update-patient id (util/parse-string-args update))]
+    (if (contains? response :error-type)
+      (bad-request response)
+      (ok))))
 
 
 ;; DELETE
@@ -108,6 +109,5 @@
   (if (util/delete-patient id)
     (ok)
     (bad-request "fail")))
-
 
 

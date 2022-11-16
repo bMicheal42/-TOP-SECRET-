@@ -63,9 +63,18 @@
         :medical_policy "2533335203525"})
 
 (def
+  acrobat_for_add {:full_name "Igor Alexandrovich Senushkin",
+                   :birthdate "2002-01-10",
+                   :address "Yerevan",
+                   :sex     "molle"
+                   :acrobat "inavalid key"
+                   :medical_policy "2533335203525"})
+
+(def
   ^{:private true}
-  acrobat {:full_name "Igor Alexandrovich Senushkin",
-           :birthdate "2002-01-10",
+  acrobat {:id 4,
+           :full_name "Igor Alexandrovich Senushkin",
+           :birthdate (date "2002-01-10"),
            :address "Yerevan",
            :sex     "molle"
            :acrobat "inavalid key"
@@ -231,7 +240,7 @@
 
 
 (defn
-  ^{:example '(update-patient 22 {:sex "male"})}
+  ^{:example '(update-patient 15 {:sex "trans" :address "Moscow" :medical_policy 23})}
   update-patient
   "update patient found by id with some params
   Arguments:
@@ -242,11 +251,28 @@
   - nil if no update done / wrong id format"
   [id update]
   (if (integer? id)
-    (let [p (get-patient id)]
-      (when (and (not (empty? update)) p (empty? (false-validations (merge p update))))
-        (j/update! *db* :patients update ["id = ?" id])))))
+    (let [p (get-patient id)
+          valid-errors (false-validations (merge p update))]
+      (if (not (empty? update))
+        (if p
+          (if (empty? valid-errors)
+            (j/update! *db* :patients update ["id = ?" id])
+            {:error-type :invalid-keys, :value valid-errors})
+          {:error-type :no-such-patient, :value (str "id = " id)})
+        {:error-type :empty-update}))))
 
 
+
+
+
+
+
+;[id update]
+;(if (integer? id)
+;  (let [p (get-patient id)
+;        valid-errors (false-validations (merge p update))]
+;    (if (and (not (empty? update)) p (empty? valid-errors))
+;      (j/update! *db* :patients update ["id = ?" id]))))
 (defn
   ^{:example '(delete-patient 3)}
   delete-patient
