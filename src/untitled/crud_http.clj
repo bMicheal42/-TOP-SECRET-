@@ -90,7 +90,7 @@
   - hash-map with :status 400 and :body with fail"
   [id update]
   (let [response (util/update-patient id (util/parse-string-args update))]
-    (if (contains? response :error-type)
+    (if (map? response)
       (bad-request response)
       (ok))))
 
