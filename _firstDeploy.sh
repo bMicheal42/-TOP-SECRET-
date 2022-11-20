@@ -18,7 +18,7 @@ export GKE_ZONE2=europe-west2-c
 # Just a placeholder for the first deployment
 export GITHUB_SHA=first_deploy
 export IP_WEB=34.105.208.84
-export IP_DB=35.246.52.38
+export IP_DB=34.142.72.59
 
 gcloud config set project $GKE_PROJECT
 gcloud config set compute/zone $GKE_ZONE
