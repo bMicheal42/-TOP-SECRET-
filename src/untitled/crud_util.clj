@@ -89,7 +89,7 @@
  - list of hash-maps with all users
  - empty if no users"
   []
-  (j/query *db* ["select * from patients"]))
+  (j/query *db* ["select * from patients ORDER BY id ASC"]))
 
 
 ;; Helper validators

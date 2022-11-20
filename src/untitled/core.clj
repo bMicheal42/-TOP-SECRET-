@@ -18,8 +18,7 @@
 ;; DONE 2. SQLite -> Postgres
 ;; TODO 3. TESTS
 ;; DONE 4. API
-;; TODO 4.1 AUTH
-;; TODO 5. FRONT
+;; DONE 5. FRONT
 ;; DONE 6. CI/CD
 ;; DONE 7. K8s
 

@@ -79,7 +79,7 @@
 
 ; UPDATE
 (defn
-  ^{:example '(update-patient 2 {:sex "male"})}
+  ^{:example '(update-patient 2 {:sex "dqwdqw"})}
   update-patient
   "update patient found by id with some params
   Arguments:
@@ -103,11 +103,9 @@
   Arguments:
   - int id
   Returns:
-  - hash-map with :status 302 and :body (empty)
+  - hash-map with :status 200 if deleted
   - hash-map with :status 400 and :body with fail"
   [id]
   (if (util/delete-patient id)
     (ok)
     (bad-request "fail")))
-
-
