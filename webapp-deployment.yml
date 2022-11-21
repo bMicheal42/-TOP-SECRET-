@@ -15,14 +15,14 @@ spec:
     spec:
       containers:
         - name: health-samurai-crud
-          image: gcr.io/health-samurai-369215/health-samurai:$GITHUB_SHA
+          image: gcr.io/health-samurai-369314/health-samurai:$GITHUB_SHA
           ports:
             - containerPort: 80
           env:
             - name: PORT
               value: "80"
             - name: DB_HOST
-              value: "34.142.72.59"
+              value: "34.142.125.92"
             - name: DB_PORT
               value: "5432"
             - name: DB_USER

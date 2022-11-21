@@ -7,13 +7,17 @@
     [compojure.route :as route]
     [compojure.coercions :refer :all]
     [ring.middleware.json :refer [wrap-json-response]]
-    [ring.middleware.json :refer :all])
+    [ring.middleware.json :refer :all]
+    [clojure.java.io :as io]
+    [ring.util.response :as resp])
   (:use     [hiccup.core]))
 
 (defn wrap-empty-params [handler]
   (fn [request] (handler (:params request))))
 
 (defroutes my-routes
+           (GET "/" [] (resp/redirect "/index.html"))
+           (route/resources "/" {:root "public"})
            (ANY "/health" _ "ok")
            (context  "/api/v1/patients" request
              (GET  "/" [] (list-patients))
