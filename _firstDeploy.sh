@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set parameters
-export GKE_PROJECT=health-samurai-369314
+export GKE_PROJECT=proud-matter-369215
 export GKE_CLUSTER=health-samurai-cluster
 export GKE_APP_NAME=health-samurai-crud
 export GKE_SERVICE=health-samurai-service
