@@ -33,7 +33,6 @@
 (defn click-filter-button []
   (reset! filter-placeholder "insert info here")
   (search-patients (merge-all-params))
-  (js/console.log (pr-str @search-params))
   (if (empty? @search-params) (get-patients) (reset! search-params nil)))
 
 (defn click-add-button []

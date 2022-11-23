@@ -283,5 +283,5 @@
   - true if patient was deleted / fasle if not
   - nil if wrong id format"
   [id]
-  (if (integer? id)
+  (when (integer? id)
     (not (= 0 (first (j/delete! *db* :patients ["id = ?" id]))))))

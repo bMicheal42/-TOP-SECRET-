@@ -1,0 +1,332 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+o o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉>  ; Use `alt+enter` to evaluate
+; Jack-in done.
+clj꞉untitled.core꞉> 
+(+ 3 4)
+7
+clj꞉untitled.core꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉> 
+; Jack-in done.
+clj꞉untitled.core꞉> 
+(-main)
+#object[org.eclipse.jetty.server.Server 0x34afb34 "Server@34afb34{STARTED}[9.4.48.v20220622]"]
+clj꞉untitled.core꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉> 
+; Jack-in done.
+clj꞉untitled.core꞉> 
+(def x (+ 4 5))
+#'untitled.core/x
+clj꞉untitled.core꞉> 
+x
+9
+clj꞉untitled.core꞉> 
+#'untitled.crud_http/update-patient
+clj꞉untitled.crud_http꞉> (-main)
+; Syntax error compiling at (.calva/output-window/output.calva-repl:64:26).
+; Unable to resolve symbol: -main in this context
+clj꞉untitled.crud_http꞉> 
+(-main)
+; Syntax error compiling at (.calva/output-window/output.calva-repl:68:1).
+; Unable to resolve symbol: -main in this context
+clj꞉untitled.crud_http꞉> 
+(in-ns 'untitled.core)
+#namespace[untitled.core]
+clj꞉untitled.core꞉> (-main)
+#object[org.eclipse.jetty.server.Server 0x7f14db66 "Server@7f14db66{STARTED}[9.4.48.v20220622]"]
+clj꞉untitled.core꞉> 
+#'untitled.crud_http/update-patient
+clj꞉untitled.crud_http꞉> 
+(eval (util/example update-patient))
+; Syntax error compiling at (.calva/output-window/output.calva-repl:79:7).
+; Unable to resolve symbol: examle in this context
+clj꞉untitled.crud_http꞉> 
+; Syntax error compiling at (.calva/output-window/output.calva-repl:79:7).
+; No such var: util/examle
+clj꞉untitled.crud_http꞉> 
+{:status 400, :headers {}, :body {:error-type :no-such-patient, :value "id = 2"}}
+clj꞉untitled.crud_http꞉> 
+(eval (exam))#'untitled.crud_util/example-fn
+clj꞉untitled.crud_util꞉> 
+(eval (example example))
+; Syntax error (ClassCastException) compiling var at (.calva/output-window/output.calva-repl:14:15).
+; class clojure.lang.Cons cannot be cast to class clojure.lang.Symbol (clojure.lang.Cons and clojure.lang.Symbol are in unnamed module of loader 'app')
+clj꞉untitled.crud_util꞉> 
+nil
+clj꞉untitled.crud_util꞉> 
+(example example)
+nil
+clj꞉untitled.crud_util꞉> 
+(example example-fn)
+(example #'example)
+clj꞉untitled.crud_util꞉> 
+#'untitled.crud_http/update-patient
+clj꞉untitled.crud_http꞉> 
+#'untitled.crud_http/update-patient
+clj꞉untitled.crud_http꞉> 
+(eval(untitled.crud_util/example update-patient))
+; Syntax error compiling at (.calva/output-window/output.calva-repl:106:2).
+; Unable to resolve symbol: example in this context
+clj꞉untitled.crud_http꞉> 
+; Execution error (ClassCastException) at untitled.crud-http/eval7958 (form-init4040785587873364179.clj:106).
+; class clojure.lang.PersistentList cannot be cast to class clojure.lang.IFn (clojure.lang.PersistentList and clojure.lang.IFn are in unnamed module of loader 'app')
+clj꞉untitled.crud_http꞉> 
+(update-patient 2 {:sex "dqwdqw"})
+clj꞉untitled.crud_http꞉> 
+{:status 400, :headers {}, :body {:error-type :no-such-patient, :value "id = 2"}}
+clj꞉untitled.crud_http꞉> 
+{:status 400, :headers {}, :body {:error-type :no-such-patient, :value "id = 2"}}
+clj꞉untitled.crud_http꞉> 
+#'untitled.crud_http/update-patient
+clj꞉untitled.crud_http꞉> 
+{:status 400, :headers {}, :body {:error-type :no-such-patient, :value "id = 2"}}
+{:status 400, :headers {}, :body {:error-type :no-such-patient, :value "id = 2"}}
+{:status 400, :headers {}, :body {:error-type :no-such-patient, :value "id = 2"}}
+{:status 400, :headers {}, :body {:error-type :no-such-patient, :value "id = 2"}}
+clj꞉untitled.crud_http꞉> 
+#'untitled.crud_http/update-patient
+clj꞉untitled.crud_http꞉> 
+{:status 400, :headers {}, :body {:error-type :invalid-keys, :value (:sex)}}
+clj꞉untitled.crud_http꞉> 
+#'untitled.crud_http/update-patient
+clj꞉untitled.crud_http꞉> 
+(eval (untitled.crud_http/example update-patient)); Syntax error compiling at (.calva/output-window/output.calva-repl:132:7).
+; Unable to resolve symbol: example in this context
+clj꞉untitled.crud_http꞉> 
+; Syntax error compiling at (.calva/output-window/output.calva-repl:132:7).
+; No such var: untitled.crud_http/example
+clj꞉untitled.crud_http꞉> 
+(eval (util/example update-patient))
+{:status 200, :headers {}, :body nil}
+clj꞉untitled.crud_http꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉> 
+; Jack-in done.
+clj꞉untitled.core꞉> 
+(-main)
+#object[org.eclipse.jetty.server.Server 0x33fea3d7 "Server@33fea3d7{STARTED}[9.4.48.v20220622]"]
+clj꞉untitled.core꞉> 
+; nREPL Connection was closed
+(+ 2 3)
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉> 
+; Jack-in done.
+clj꞉untitled.core꞉> #'untitled.crud_http/delete-patient
+clj꞉untitled.crud_http꞉> 
+(clojure.repl/doc delete-patient)
+; Syntax error compiling at (.calva/output-window/output.calva-repl:176:1).
+; No such var: clojure.core/doc
+clj꞉untitled.crud_http꞉> 
+; Syntax error compiling at (.calva/output-window/output.calva-repl:176:1).
+; Unable to resolve symbol: doc in this context
+clj꞉untitled.crud_http꞉> 
+; Syntax error reading source at (REPL:176:15).
+; Invalid token: clojure.repl/
+clj꞉untitled.crud_http꞉> 
+-------------------------
+untitled.crud_http/delete-patient
+([id])
+  add patient by its params
+  Arguments:
+  - int id
+  Returns:
+  - hash-map with :status 200 if deleted
+  - hash-map with :status 400 and :body with fail
+nil
+clj꞉untitled.crud_http꞉> 
+#'untitled.crud_util/search-patients
+clj꞉untitled.crud_util꞉> 
+"select * from patients where "
+clj꞉untitled.crud_util꞉> 
+; Execution error (ArityException) at untitled.crud-util/eval7929 (form-init1307492918084787938.clj:217).
+; Wrong number of args (1) passed to: clojure.core/apply
+clj꞉untitled.crud_util꞉> 
+; Syntax error compiling at (src/untitled/crud_util.clj:212:27).
+; Unable to resolve symbol: params in this context
+clj꞉untitled.crud_util꞉> 
+#'untitled.crud_util/keywords
+clj꞉untitled.crud_util꞉> 
+(def params {:sex "male" :medical_policy 1231321402253324})
+#'untitled.crud_util/params
+clj꞉untitled.crud_util꞉> 
+"select * from patients where sex = ? and medical_policy = ?"
+clj꞉untitled.crud_util꞉> 
+(nil nil "sex = ?" "medical_policy = ?" nil nil)
+clj꞉untitled.crud_util꞉> 
+(str "select * from patients where " (apply str (interpose " and " (remove nil?(apply vector (for [keyword keywords]
+  (when (keyword params)
+    (str (name keyword) " = ?"))))))))
+[nil nil "sex = ?" "medical_policy = ?" nil nil]
+clj꞉untitled.crud_util꞉> 
+("sex = ?" "medical_policy = ?")
+
+("sex = ?" " and " "medical_policy = ?")
+clj꞉untitled.crud_util꞉> 
+"sex = ? and medical_policy = ?"
+clj꞉untitled.crud_util꞉> 
+"select * from patients where sex = ? and medical_policy = ?"
+clj꞉untitled.crud_util꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉> 
+; Jack-in done.
+clj꞉untitled.core꞉> 
+#'untitled.crud_util/default-schema
+clj꞉untitled.crud_util꞉> 
+#'untitled.crud_util/default-schema
+clj꞉untitled.crud_util꞉> 
+(eval (example default-schema))
+true
+clj꞉untitled.crud_util꞉> 
+; Syntax error compiling at (frontend/src/app/core.cljs:15:3).
+; Unable to resolve symbol: get-patients in this context
+clj꞉app.core꞉> 
+; Syntax error compiling at (frontend/src/app/core.cljs:15:3).
+; Unable to resolve symbol: get-patients in this context
+clj꞉app.core꞉> 
+; Syntax error compiling at (frontend/src/app/core.cljs:15:3).
+; Unable to resolve symbol: get-patients in this context
+clj꞉app.core꞉> 
+; Syntax error compiling at (frontend/src/app/core.cljs:15:3).
+; Unable to resolve symbol: get-patients in this context
+clj꞉app.core꞉> 
+; Syntax error compiling at (frontend/src/app/core.cljs:1:7981).
+; No such namespace: rdom
+clj꞉app.core꞉> 
+; Syntax error compiling at (frontend/src/app/core.cljs:9:17).
+; No such namespace: js
+clj꞉app.core꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :dependencies conj '[cider/cider-nrepl,"0.28.5"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["shadow.cljs.devtools.server.nrepl/middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: Leiningen + shadow-cljs...
+;   The Calva Connection Log might have more connection progress information.
+; Error while connecting cljs REPL: EntryNotFound (FileSystemError): Unable to read file '/Users/boss/HS/shadow-cljs.edn' (Error: Unable to resolve nonexistent file '/Users/boss/HS/shadow-cljs.edn')
+; Jack-in done.
+clj꞉untitled.core꞉> 
+(+ 2 3)
+5
+clj꞉untitled.core꞉> 
+; Syntax error compiling at (frontend/src/app/events.cljs:39:3).
+; Unable to resolve symbol: merge-all-params in this context
+clj꞉app.events꞉> 
+; Syntax error compiling at (frontend/src/app/events.cljs:39:3).
+; Unable to resolve symbol: merge-all-params in this context
+clj꞉app.events꞉> 
+; Syntax error compiling at (frontend/src/app/events.cljs:34:3).
+; Unable to resolve symbol: filter-placeholder in this context
+clj꞉app.events꞉> 
+; Syntax error compiling at (frontend/src/app/events.cljs:24:9).
+; No such namespace: js
+clj꞉app.events꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"1.0.0"]' -- update-in :dependencies conj '[cider/cider-nrepl,"0.28.5"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.28.5"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["shadow.cljs.devtools.server.nrepl/middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉untitled.core꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: Leiningen + shadow-cljs...
+;   The Calva Connection Log might have more connection progress information.
+; Error while connecting cljs REPL: EntryNotFound (FileSystemError): Unable to read file '/Users/boss/HS/shadow-cljs.edn' (Error: Unable to resolve nonexistent file '/Users/boss/HS/shadow-cljs.edn')
+; Jack-in done.
+clj꞉untitled.core꞉> 
+; Syntax error compiling at (frontend/src/app/events.cljs:39:3).
+; Unable to resolve symbol: merge-all-params in this context
+clj꞉app.events꞉> 
+(+ 2 3)
+5
+clj꞉app.events꞉> 
+(js/console.log "dw")
+; Syntax error compiling at (.calva/output-window/output.calva-repl:328:1).
+; No such namespace: js
+clj꞉app.events꞉> 
+; nREPL Connection was closed

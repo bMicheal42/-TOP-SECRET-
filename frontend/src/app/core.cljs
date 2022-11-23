@@ -13,5 +13,4 @@
 
 (defn ^:export init []
   (get-patients)
-  (js/console.log "Debug")
   (mount-root))

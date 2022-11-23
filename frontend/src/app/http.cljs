@@ -1,9 +1,10 @@
 (ns app.http
-  (:require [cljs-http.client :as http]
+  (:require [app.atoms :refer [editable editable-params patients
+                               update-button-name wrong-keys]]
+            [app.utils :refer [parse-patients-dates render-patient!]]
+            [cljs-http.client :as http]
             [clojure.core.async :refer [<! go]]
-            [app.atoms :refer [patients search-params editable editable-params update-button-name
-                               wrong-keys]]
-            [app.utils :refer [parse-patients-dates render-patient! clear-search-atoms]]))
+            [clojure.string :as str]))
 
 ;; ______________ HTTP METHODS ______________
 (defn get-patients []
@@ -30,7 +31,7 @@
       (when (= "already-exists" (:error-type (:body res)))
         (js/alert "User with such policy already exists!"))
       (when (= "invalid-keys" (:error-type (:body res)))
-          (js/alert (str "Invalid keys: " (clojure.string/join ", " (:value (:body res)))))))))
+          (js/alert (str "Invalid keys: " (str/join ", " (:value (:body res)))))))))
 
 (defn delete-patient [id]
   (go

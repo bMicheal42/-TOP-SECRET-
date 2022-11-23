@@ -1,12 +1,10 @@
 {:source-paths ["src"]
 
  :dependencies [[proto-repl "0.3.1"]
-                [reagent "1.1.1"] 
+                [reagent "1.1.1"]
                 [noencore "0.3.7"]
-                [org.clojure/core.async "1.5.648"]
-                [cljs-http "0.1.46"]
-                [bidi "2.1.6"]
-                [kibu/pushy "0.3.8"]]
+                [cljs-http "0.1.46"]]
+ ;[org.clojure/core.async "1.5.648"]
 
  :nrepl        {:port 3333}
 
@@ -15,8 +13,8 @@
                 :asset-path "/js"
 
                 :modules {:main {:init-fn app.core/init}}
-                
+
 
                 :devtools {:http-root   "public"
-                           :http-port   3000
-                           }}}}
+                           :http-port   3000}}}}
+

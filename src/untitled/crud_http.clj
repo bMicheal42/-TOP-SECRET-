@@ -79,7 +79,7 @@
 
 ; UPDATE
 (defn
-  ^{:example '(update-patient 2 {:sex "dqwdqw"})}
+  ^{:example '(update-patient 3 {:sex "male"})}
   update-patient
   "update patient found by id with some params
   Arguments:
